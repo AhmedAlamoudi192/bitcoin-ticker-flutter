@@ -19,6 +19,7 @@ const List<String> currenciesList = [
   'PLN',
   'RON',
   'RUB',
+  'SAR',
   'SEK',
   'SGD',
   'USD',
@@ -34,7 +35,14 @@ const List<String> cryptoList = [
 class CoinData {
   CoinData();
 
-  Future getCoinData(String currency,String type) async {
+  Future getCoinData(String currency, String type) async {
+    if (currency == "SAR") {
+      currency = "USD";
+      Uri coinApibtc = Uri.parse(
+          "https://rest.coinapi.io/v1/exchangerate/$type/$currency?apikey=FBE66C1C-023C-40A4-927B-8854ABC98623");
+      http.Response btcResponse = await http.get(coinApibtc);
+      return jsonDecode(btcResponse.body)['rate'] * 3.75;
+    }
     Uri coinApibtc = Uri.parse(
         "https://rest.coinapi.io/v1/exchangerate/$type/$currency?apikey=FBE66C1C-023C-40A4-927B-8854ABC98623");
     http.Response btcResponse = await http.get(coinApibtc);
